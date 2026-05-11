@@ -1,20 +1,14 @@
-// ============================================================
-// AuthPage.js — Login and Register screen
-//
-// Shows a card with two tabs: Login and Register.
-// On success it calls onLogin(user, token) from App.js.
-// ============================================================
-
 import React, { useState } from "react";
 
-// API base URL — because of "proxy" in package.json,
-// we only need the path, not the full http://localhost:5000
-const API = "/api/auth";
+// ✅ Use environment variable for deployed app
+// Fallback to localhost for development
+const API =
+  process.env.REACT_APP_API_URL
+    ? `${process.env.REACT_APP_API_URL}/api/auth`
+    : "http://localhost:5000/api/auth";
 
-// Props:
-//   onLogin — function from App.js, called with (user, token)
 function AuthPage({ onLogin }) {
-  const [tab, setTab]           = useState("login"); // "login" or "register"
+  const [tab, setTab]           = useState("login");
   const [name, setName]         = useState("");
   const [email, setEmail]       = useState("");
   const [password, setPassword] = useState("");
@@ -26,7 +20,6 @@ function AuthPage({ onLogin }) {
     setError("");
     setLoading(true);
 
-    // Build the request body based on which tab is active
     const body = tab === "register"
       ? { name, email, password }
       : { email, password };
@@ -38,15 +31,14 @@ function AuthPage({ onLogin }) {
         body:    JSON.stringify(body),
       });
 
-      const data = await res.json();
+      const text = await res.text();
+      const data = text ? JSON.parse(text) : {};
 
       if (!res.ok) {
-        // Show the error message from the backend
         setError(data.message || "Something went wrong.");
         return;
       }
 
-      // Success — pass user and token up to App.js
       onLogin(data.user, data.token);
 
     } catch (err) {
@@ -60,14 +52,12 @@ function AuthPage({ onLogin }) {
     <div className="auth-wrapper">
       <div className="auth-card">
 
-        {/* Logo / title */}
         <div className="auth-logo">
           <span className="auth-logo-icon">✅</span>
           <h1 className="auth-logo-text">TaskFlow</h1>
         </div>
         <p className="auth-subtitle">Organise your work with a Kanban board</p>
 
-        {/* Tab switcher */}
         <div className="auth-tabs">
           <button
             className={`auth-tab ${tab === "login" ? "active" : ""}`}
@@ -83,10 +73,8 @@ function AuthPage({ onLogin }) {
           </button>
         </div>
 
-        {/* Form */}
         <form className="auth-form" onSubmit={handleSubmit}>
 
-          {/* Name field — only shown on Register tab */}
           {tab === "register" && (
             <div className="form-group">
               <label className="form-label">Full Name</label>
@@ -126,7 +114,6 @@ function AuthPage({ onLogin }) {
             />
           </div>
 
-          {/* Error message */}
           {error && <p className="auth-error">⚠️ {error}</p>}
 
           <button className="auth-submit-btn" type="submit" disabled={loading}>
@@ -137,7 +124,6 @@ function AuthPage({ onLogin }) {
 
         </form>
 
-        {/* Switch tab hint */}
         <p className="auth-switch">
           {tab === "login"
             ? "Don't have an account? "

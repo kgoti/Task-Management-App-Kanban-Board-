@@ -1,28 +1,18 @@
-// ============================================================
-// KanbanBoard.js — Main board with 3 columns
-//
-// Fetches all tasks from the backend on load.
-// Passes tasks filtered by status to each KanbanColumn.
-// Handles creating, updating (status drag), and deleting tasks.
-// ============================================================
-
 import React, { useState, useEffect } from "react";
 import KanbanColumn from "./KanbanColumn";
-import TaskModal    from "./TaskModal";
+import TaskModal from "./TaskModal";
 
-const API = "/api/tasks";
+const API =
+  process.env.REACT_APP_API_URL
+    ? `${process.env.REACT_APP_API_URL}/api/tasks`
+    : "http://localhost:5000/api/tasks";
 
-// The three columns — their id matches the "status" field in MongoDB
 const COLUMNS = [
-  { id: "todo",       label: "To Do",       emoji: "📋" },
-  { id: "inprogress", label: "In Progress",  emoji: "⚙️"  },
-  { id: "done",       label: "Done",         emoji: "✅" },
+  { id: "todo", label: "To Do", emoji: "📋" },
+  { id: "inprogress", label: "In Progress", emoji: "⚙️" },
+  { id: "done", label: "Done", emoji: "✅" },
 ];
 
-// Props:
-//   user     — { id, name, email }
-//   token    — JWT string
-//   onLogout — function from App.js
 function KanbanBoard({ user, token, onLogout }) {
   const [tasks, setTasks]         = useState([]);
   const [loading, setLoading]     = useState(true);

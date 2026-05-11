@@ -1,15 +1,3 @@
-// ============================================================
-// KanbanColumn.js — A single column (To Do / In Progress / Done)
-//
-// Receives:
-//   column     — { id, label, emoji }
-//   tasks      — array of tasks with status matching this column
-//   allColumns — all 3 columns (used to build move buttons)
-//   onEdit     — opens the edit modal
-//   onDelete   — deletes the task
-//   onMove     — moves task to a different column
-// ============================================================
-
 import React from "react";
 import TaskCard from "./TaskCard";
 
