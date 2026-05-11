@@ -1,0 +1,536 @@
+/* ============================================================
+   App.css — All styles for the Task Manager Kanban App
+
+   Sections:
+   1.  Auth page (login / register)
+   2.  Form elements (shared between auth and modal)
+   3.  Kanban board layout
+   4.  Board header (navbar)
+   5.  Kanban columns
+   6.  Task cards
+   7.  Task modal (create / edit)
+   8.  Buttons
+   9.  Priority badges
+   10. Responsive
+   ============================================================ */
+
+
+/* ══════════════════════════════════════════════════════════
+   1. AUTH PAGE
+   ══════════════════════════════════════════════════════════ */
+
+.auth-wrapper {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #1a3a5c 0%, #2e75b6 100%);
+  padding: 24px 16px;
+}
+
+.auth-card {
+  background: white;
+  border-radius: 20px;
+  padding: 40px 36px;
+  width: 100%;
+  max-width: 420px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.25);
+}
+
+.auth-logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 6px;
+}
+
+.auth-logo-icon { font-size: 2rem; }
+
+.auth-logo-text {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: #1a3a5c;
+}
+
+.auth-subtitle {
+  color: #666;
+  font-size: 0.95rem;
+  margin-bottom: 28px;
+}
+
+.auth-tabs {
+  display: flex;
+  background: #f0f4f8;
+  border-radius: 10px;
+  padding: 4px;
+  margin-bottom: 24px;
+}
+
+.auth-tab {
+  flex: 1;
+  padding: 9px;
+  border: none;
+  border-radius: 8px;
+  background: transparent;
+  font-size: 0.95rem;
+  font-weight: 500;
+  cursor: pointer;
+  color: #666;
+  transition: all 0.2s;
+}
+
+.auth-tab.active {
+  background: white;
+  color: #1a3a5c;
+  font-weight: 600;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.auth-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.auth-error {
+  color: #dc3545;
+  font-size: 0.9rem;
+  background: #fff0f0;
+  border: 1px solid #ffd0d0;
+  border-radius: 8px;
+  padding: 10px 14px;
+}
+
+.auth-submit-btn {
+  width: 100%;
+  padding: 13px;
+  background: #1a3a5c;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.1s;
+  margin-top: 4px;
+}
+
+.auth-submit-btn:hover    { background: #2e75b6; }
+.auth-submit-btn:active   { transform: scale(0.98); }
+.auth-submit-btn:disabled { background: #aaa; cursor: not-allowed; }
+
+.auth-switch {
+  text-align: center;
+  margin-top: 20px;
+  font-size: 0.9rem;
+  color: #666;
+}
+
+.auth-switch-btn {
+  background: none;
+  border: none;
+  color: #2e75b6;
+  font-weight: 600;
+  cursor: pointer;
+  text-decoration: underline;
+  font-size: 0.9rem;
+}
+
+
+/* ══════════════════════════════════════════════════════════
+   2. SHARED FORM ELEMENTS
+   ══════════════════════════════════════════════════════════ */
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  flex: 1;
+}
+
+.form-label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #333;
+}
+
+.form-input {
+  padding: 10px 14px;
+  border: 1.5px solid #d0d8e4;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  color: #1a1a2e;
+  outline: none;
+  transition: border-color 0.2s;
+  width: 100%;
+  background: white;
+}
+
+.form-input:focus   { border-color: #2e75b6; }
+.form-textarea      { resize: vertical; font-family: inherit; }
+
+
+/* ══════════════════════════════════════════════════════════
+   3. KANBAN BOARD LAYOUT
+   ══════════════════════════════════════════════════════════ */
+
+.board-wrapper {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background: #f0f4f8;
+}
+
+.board-main {
+  flex: 1;
+  padding: 28px 20px;
+}
+
+.board-loading,
+.board-error {
+  text-align: center;
+  padding: 60px;
+  font-size: 1.1rem;
+  color: #555;
+}
+
+.board-error { color: #dc3545; }
+
+/* Three columns sit side by side */
+.board-columns {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  align-items: start;
+}
+
+
+/* ══════════════════════════════════════════════════════════
+   4. BOARD HEADER (top navbar)
+   ══════════════════════════════════════════════════════════ */
+
+.board-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 24px;
+  background: #1a3a5c;
+  color: white;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.15);
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.board-header-left {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.board-logo {
+  font-size: 1.3rem;
+  font-weight: 700;
+}
+
+.board-welcome {
+  font-size: 0.9rem;
+  opacity: 0.8;
+}
+
+.board-header-right {
+  display: flex;
+  gap: 10px;
+}
+
+
+/* ══════════════════════════════════════════════════════════
+   5. KANBAN COLUMNS
+   ══════════════════════════════════════════════════════════ */
+
+.kanban-column {
+  background: #e4ebf5;
+  border-radius: 16px;
+  padding: 16px;
+  min-height: 300px;
+}
+
+.column-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 16px;
+  padding-bottom: 12px;
+  border-bottom: 2px solid rgba(0,0,0,0.08);
+}
+
+.column-emoji  { font-size: 1.2rem; }
+
+.column-title {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #1a3a5c;
+  flex: 1;
+}
+
+/* Small badge showing task count */
+.column-count {
+  background: #1a3a5c;
+  color: white;
+  font-size: 0.75rem;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 20px;
+}
+
+.column-cards {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.column-empty {
+  color: #999;
+  font-size: 0.88rem;
+  text-align: center;
+  padding: 20px 0;
+  font-style: italic;
+}
+
+
+/* ══════════════════════════════════════════════════════════
+   6. TASK CARDS
+   ══════════════════════════════════════════════════════════ */
+
+.task-card {
+  background: white;
+  border-radius: 12px;
+  padding: 14px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+  transition: transform 0.15s, box-shadow 0.15s;
+  border-left: 4px solid #2e75b6;
+}
+
+.task-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(0,0,0,0.12);
+}
+
+.task-card-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+
+.task-move-btns {
+  display: flex;
+  gap: 4px;
+}
+
+.move-btn {
+  padding: 3px 9px;
+  border: 1.5px solid #d0d8e4;
+  border-radius: 6px;
+  background: #f8f9fa;
+  color: #1a3a5c;
+  font-size: 0.85rem;
+  cursor: pointer;
+  font-weight: 700;
+  transition: background 0.15s;
+}
+
+.move-btn:hover { background: #e4ebf5; }
+
+.task-title {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #1a1a2e;
+  margin-bottom: 6px;
+  line-height: 1.3;
+}
+
+.task-description {
+  font-size: 0.82rem;
+  color: #666;
+  margin-bottom: 8px;
+  line-height: 1.45;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;    /* show max 2 lines, then ... */
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.task-due {
+  font-size: 0.78rem;
+  color: #555;
+  margin-bottom: 10px;
+}
+
+.task-due.overdue {
+  color: #dc3545;
+  font-weight: 600;
+}
+
+.task-card-bottom {
+  display: flex;
+  gap: 8px;
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px solid #f0f0f0;
+}
+
+.task-edit-btn,
+.task-delete-btn {
+  flex: 1;
+  padding: 6px;
+  border: 1.5px solid #d0d8e4;
+  border-radius: 7px;
+  background: transparent;
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.task-edit-btn:hover   { background: #e4ebf5; }
+.task-delete-btn:hover { background: #ffe4e4; border-color: #ffc0c0; }
+
+
+/* ══════════════════════════════════════════════════════════
+   7. TASK MODAL
+   ══════════════════════════════════════════════════════════ */
+
+/* Dark semi-transparent backdrop behind the modal */
+.modal-backdrop {
+  position: fixed;
+  inset: 0;                /* shorthand for top/right/bottom/left: 0 */
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 16px;
+  animation: fadeIn 0.15s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+.modal-card {
+  background: white;
+  border-radius: 18px;
+  padding: 32px;
+  width: 100%;
+  max-width: 500px;
+  box-shadow: 0 24px 60px rgba(0,0,0,0.3);
+  animation: slideUp 0.2s ease;
+}
+
+@keyframes slideUp {
+  from { transform: translateY(20px); opacity: 0; }
+  to   { transform: translateY(0);    opacity: 1; }
+}
+
+.modal-title {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: #1a3a5c;
+  margin-bottom: 22px;
+}
+
+/* Status and Priority dropdowns side by side */
+.modal-row {
+  display: flex;
+  gap: 14px;
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 22px;
+}
+
+
+/* ══════════════════════════════════════════════════════════
+   8. BUTTONS
+   ══════════════════════════════════════════════════════════ */
+
+.btn-primary {
+  padding: 10px 20px;
+  background: #2e75b6;
+  color: white;
+  border: none;
+  border-radius: 9px;
+  font-size: 0.92rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.1s;
+}
+
+.btn-primary:hover  { background: #1a5fa0; }
+.btn-primary:active { transform: scale(0.97); }
+
+.btn-secondary {
+  padding: 10px 20px;
+  background: transparent;
+  color: #555;
+  border: 1.5px solid #d0d8e4;
+  border-radius: 9px;
+  font-size: 0.92rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.btn-secondary:hover { background: #f0f4f8; }
+
+.btn-logout {
+  padding: 8px 18px;
+  background: transparent;
+  color: rgba(255,255,255,0.8);
+  border: 1.5px solid rgba(255,255,255,0.4);
+  border-radius: 9px;
+  font-size: 0.88rem;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.btn-logout:hover { background: rgba(255,255,255,0.12); }
+
+
+/* ══════════════════════════════════════════════════════════
+   9. PRIORITY BADGES
+   ══════════════════════════════════════════════════════════ */
+
+.priority-badge {
+  font-size: 0.72rem;
+  font-weight: 700;
+  padding: 3px 10px;
+  border-radius: 20px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.priority-low    { background: #d4edda; color: #155724; }
+.priority-medium { background: #fff3cd; color: #856404; }
+.priority-high   { background: #f8d7da; color: #721c24; }
+
+
+/* ══════════════════════════════════════════════════════════
+   10. RESPONSIVE
+   ══════════════════════════════════════════════════════════ */
+
+@media (max-width: 768px) {
+  .board-columns {
+    grid-template-columns: 1fr;
+  }
+  .modal-row {
+    flex-direction: column;
+  }
+  .board-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
